@@ -1,0 +1,238 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,user-scalable=no">
+    <meta name="description" content="현대인테리어" />
+    <meta property="og:title" content="현대인테리어" />
+    <meta property="og:description" content="인테리어,리모델링,건축의 기준 | 현대인테리어" />
+    <meta property="og:image" content="/Images/Common/logo_interiorHD.jpg" />
+    <meta property="og:url" content="https://www.midorok.com" />
+    <title>현대인테리어 홈페이지입니다.</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/Content/reset.css" rel="stylesheet">
+    <link href="/Content/common.css" rel="stylesheet">
+    <link href="/Content/jquery.bxslider.min.css" rel="stylesheet">
+    <script src="/Scripts/jquery-1.11.3.js"></script>
+    <script src="/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="/Scripts/jquery.bxslider.js"></script>
+    <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=3844wpdj0n"></script>
+    <style>
+        section {position: relative;width: 100%;background-color: #fff;font-size: 16px;}
+        section p, section h2 {font-family: 'nanumsquare';}
+        #section1 {height: 100vh;}
+        #section1 .bg_main {position: fixed;top: 0;left: 0;width: 100%;height: 100vh;}
+        #section1 .bg_main img {width: 100%;height: 120%;}
+        #section1 .text_main {position: fixed;top: 50%;left: 50%;width: 100%;transform: translate(-50%, -50%);text-align: center;word-break: keep-all;}
+        .letter_motion1 {margin: 0 auto;padding: 30px 0;text-align: center;}
+        .letter_motion1 span {display: inline-block;color: #333;font-weight: bold;font-size: 1.5em;opacity: 0;transition: all 1.5s ease;}
+        .letter_motion1 span:nth-child(odd) {transform: translate(0, -10px);}
+        .letter_motion1 span:nth-child(even) {transform: translate(0, 10px);}
+        .letter_motion1 span.active {opacity: 1;transform: translate(0);}
+        #section1 .text_main p {width: 90%;max-width: 700px;margin: 0 auto;padding-top: 20px;border-top: 1px solid #6f6f6f;color: #111;font-size: 1.2em;opacity: 0;}
+        #section2 {padding: 4.5em 0;}
+        #section2 h2 {text-align: center;}
+        #section2 h2 img.logo {width: 100%;margin-bottom: 30px;}
+        #section2 p {width: 90%;margin: 0 auto;text-align: justify;}
+        #section3 {background-color: #eee;}
+        .box_col {overflow: hidden;}
+        .box_col > div {float: left;width: 100%;}
+        .box_col .text_sub {margin: 5%;width: 90%;}
+        .box_col .text_sub h2 {margin: 20px 0;font-size: 2em;letter-spacing: 1.3px;}
+        .box_col .text_sub span {display: block;margin-top: 2em;color: #808080;font-size: 0.9em;}
+        .box_col .text_sub span b {display: block;margin: 2em 0 1em 0;}
+        .bx-wrapper {margin-bottom: 0;}
+        .bx-wrapper .bx-pager {bottom: 8px;}
+        #section5 {padding-top: 4em;}
+        .rollingBanner {margin: 0 auto;width: 90%;max-width: 1080px;overflow: hidden;}
+        .rollingBanner > ul {overflow: hidden;width: 120%;height: 40px;}
+        .rollingBanner > ul > li {float: left;display: block;}
+        .rollingBanner > ul > li > img {height: 40px;margin: 0 1em;}
+        footer {position: relative;width: 100%;padding: 4em 0;background-color: #fff;}
+        footer ul {width: 90%;margin: 0 auto;vertical-align: middle;}
+        footer ul li {line-height: 2.2;}
+        footer ul li:last-child {color: #aaa;font-size: 0.85em;}
+        footer ul li i {display: inline-block;width: 25px;height: 25px;background: url(../../Images/Common/icon_collection.png);background-position: -34px -60px;vertical-align: middle;}
+        footer ul li i.icon_mail {background-position: -34px -2px;}
+        footer ul li i.icon_tel {background-position: -4px -4px;}
+        .map_wrap {overflow: hidden;width: 100%;height: 200px;margin-bottom: 3em;}
+        @media (min-width: 1280px) {
+            section {font-size: 18px;}
+            .letter_motion1 span {font-size: 2em;}
+            #section2 p {width: 850px;line-height: 2;}
+            #section2 h2 img.logo {width: 500px;}
+            .box_col > div {width: 50%;}
+            .box_col .text_sub {width: 40%;}
+            .text_sub p {max-width: 75%;line-height: 2;}
+            footer ul {padding: 20px 0;text-align: center;background-color: #eee;}
+            .map_wrap {height: 400px;}
+        }
+    </style>
+    <script>
+        $(function () {
+
+            //main_bg 이벤트
+            $("#section1 .bg_main img").animate({ "width": "120%", "height": "140%", "opacity": "0.5" }, 5000)
+            setTimeout(function () {
+                $(".letter_motion1 span").addClass('active');
+                $("#section1 .text_main p").animate({ "opacity": "1" }, 1000);
+            }, 2000)
+
+           
+            $('.bxslider').bxSlider({});
+
+
+            //rollingBanner 이벤트
+            var moveType = 0; 
+            var moveSpeed = 5000; 
+            var moveWork = false; 
+            var movePause = false; 
+
+            $(".rollingBanner img").mouseenter(function () {
+                movePause = true;
+            });
+            $('.rollingBanner img').on({
+                mouseenter: function () { movePause = true; },
+                mouseleave: function () { movePause = false; imgMove();}
+            });
+
+            function imgMove(){ 
+                if(moveWork==false){ 
+                   // 0d\일경우 left방향 
+                  if(moveType==0){ 
+                     // 맨처음 이미지의 폭 
+                     var aWidth = $(".rollingBanner > ul > li:first").width(); 
+                     $(".rollingBanner > ul").append("<li>" + $(".rollingBanner > ul > li:first").html()+ "</li>"); 
+                     $(".rollingBanner > ul > li:first").animate({marginLeft:-aWidth},{duration:moveSpeed,step:function(){ 
+                     if(movePause==true){ 
+                        $(this).stop(); 
+                     } 
+                     },complete:function(){ 
+                     $(this).remove(); 
+                     imgMove(); 
+                  }}); 
+                  }else{ 
+                   var aWidth = $(".rollingBanner > ul > li:last").width(); 
+                   $("<li style=\"margin-left:-" + aWidth + "px\">" + $(".rollingBanner > ul > li:last").html() + "</li>").insertBefore(".rollingBanner > ul > li:first");
+                   $(".rollingBanner > ul > li:first").animate({marginLeft:0},{duration:moveSpeed,step:function(){ 
+                   if(movePause==true){
+                      $(this).stop(); 
+                   } 
+                   },complete:function(){ 
+                   $(".rollingBanner > ul > li:last").remove(); 
+                   imgMove(); 
+                }}); 
+             } 
+             } 
+             } 
+             function goMove(){ 
+                movePause=false;
+                if(moveType==0){ 
+                   imgMove(); 
+                }else{ 
+                   $(".rollingBanner > ul > li:first").animate({marginLeft:0},{duration:moveSpeed,step:function(){ 
+                   if(movePause==true){ 
+                      $(this).stop(); 
+                    } 
+                   },complete:function(){ 
+                  imgMove(); 
+               }}); 
+            }
+   
+            }
+            imgMove(); 
+        });
+    </script>
+</head>
+<body>
+    <div class="wrapper">
+        <section id="section1">
+            <div class="bg_main"><img src="Images/bg_main.jpg" title="현대인테리어 메인 배경이미지" alt="현대인테리어 메인 배경이미지" /></div>
+            <div class="text_main">
+                <h1 class="letter_motion1">
+                    <span>I</span>
+                    <span>N</span>
+                    <span>T</span>
+                    <span>E</span>
+                    <span>R</span>
+                    <span>I</span>
+                    <span>O</span>
+                    <span>R</span>
+                </h1>
+                <p>사람에 대한 생각을 바탕으로 보다 풍요로운 생활공간을 공유하고 새로운 라이프스타일 추구하여 설계합니다.</p>
+            </div>
+        </section>
+        <section id="section2">
+            <h2><img src="/Images/Common/logo_interiorHD.jpg" class="logo" title="현대인테리어" alt="현대인테리어" /></h2>
+            <p>
+                고객만족에 최선을 다하며, 신개념 건축을통하여 미래지향적 호텔, 리조트 주택건설에노력하는 현대인테리어입니다. 현대인테리어은 상업건축, 고급주문주택, 전원주택등 특성화 되어진 주택건축을 전문으로 건축, 인테리어하는 회사로 풍부한 경험과 실력을 겸비한 기술진이 내집을 짓는 정성을 담아 최고의 건축물을 짓는다는 마음으로 집을 지어드리고 있습니다.
+            </p>
+        </section>
+        <section id="section3">
+            <div class="box_col">
+                <div class="bxslider">
+                    <div><img src="Images/slide1.jpg" title="인테리어 예시사진" alt="인테리어 예시사진"></div>
+                    <div><img src="Images/slide2.jpg" title="인테리어 예시사진" alt="인테리어 예시사진"></div>
+                    <div><img src="Images/slide3.jpg" title="인테리어 예시사진" alt="인테리어 예시사진"></div>
+                </div>
+                <div class="text_sub">
+                    <h2>Interior·Remodeling</h2>
+                    <p>
+                        공간의 효율성, 고객의 만족도를 꼼꼼히 따져 인테리어·리모델링합니다.공간구성 전반(공간계획/디자인/설계), 구조 안전 검토, 인허가 기반 증축/개축공사/사무공간/주거공간/상업공간/의료공간/전시공간 등
+                        <span><b>융합 콘텐츠 공간 디자인</b>새로운 가치를 창출하기 위하여 초융합, 초연결, 초지능의 가치를 이해하는 각 분야의 전문가 및 디자이너들이 콜라보하여 고유한 가치가 담긴 공간을 디자인합니다.</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+        <section id="section4">
+            <div class="box_col">
+                <div class="text_sub">
+                    <h2>Architecture</h2>
+                    <p>
+                        체계적이고 꼼꼼한 시공관리를 바탕으로 차별화된 건축물의 가치와 품질을 부여하여 건물을 짓습니다.건축 기획 전반 (건축디자인/기획설계), 공사 시공사 디자인 감리 건축 설계사무소 협력사 기반 진행<span><b>융합 콘텐츠 건축 디자인</b>새로운 가치를 창출하기 위하여 초융합, 초연결, 초지능의 가치를 이해하는각 분야의 전문가 및 디자이너들이 콜라보하여 용과 미의 가치가 어우러진 건축물을 설계/디자인합니다</span>
+                    </p>
+
+                </div>
+                <div class="bxslider">
+                    <div><img src="Images/slide4.jpg" title="인테리어 예시사진" alt="인테리어 예시사진"></div>
+                    <div><img src="Images/slide5.jpg" title="인테리어 예시사진" alt="인테리어 예시사진"></div>
+                    <div><img src="Images/slide6.jpg" title="인테리어 예시사진" alt="인테리어 예시사진"></div>
+                </div>
+            </div>
+        </section>
+        <section id="section5">
+            <div class="rollingBanner">
+                <ul>
+                    <li><img src="Images/logo1.jpg" title="대림바스 로고이미지" alt="대림바스 로고이미지"></li>
+                    <li><img src="Images/logo2.jpg" title="대림 로고이미지" alt="대림 로고이미지"></li>
+                    <li><img src="Images/logo3.jpg" title="에넥스 로고이미지" alt="에넥스 로고이미지"></li>
+                    <li><img src="Images/logo4.jpg" title="리바트 로고이미지" alt="리바트 로고이미지"></li>
+                    <li><img src="Images/logo5.jpg" title="보루네오 로고이미지" alt="보루네오 로고이미지"></li>
+                    <li><img src="Images/logo6.jpg" title="카사미아 로고이미지" alt="카사미아 로고이미지"></li>
+                    <li><img src="Images/logo7.jpg" title="시몬스 로고이미지" alt="시몬스 로고이미지"></li>
+                </ul>
+            </div>
+        </section>
+        <footer>
+            <div class="map_wrap" id="map"></div>
+            <ul class="text_sub">
+                <li><i></i>서울 성동구 마조로 61 현대인테리어</li>
+                <li><i class="icon_mail"></i>interiorHD@gmail.com</li>
+                <li><i class="icon_tel"></i>070-XXXX-XXXX</li>
+                <li>© 2019. 현대인테리어. ALL RIGHTS RESERVED.</li>
+            </ul>
+        </footer>
+    </div>
+    <script>
+        var map = new naver.maps.Map('map', {
+            center: new naver.maps.LatLng(37.5633933, 127.0415074),
+            zoom: 10
+        });
+
+        var marker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(37.5633933, 127.0415074),
+            map: map
+        });
+    </script>
+</body>
+</html>
