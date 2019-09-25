@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,user-scalable=no">
+    <title>Portfolio</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="Content/reset.css" rel="stylesheet">
+    <link href="Content/common.css" rel="stylesheet">
+    <script src="Scripts/jquery-1.11.3.js"></script>
+    <script src="Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script>
+        var time = 500;
+        var isOpen = false;
+        var isMobile = true;
+        var winWidth = $(window).width();
+        
+        $("document").ready(function () {
+            var browser_check = navigator.userAgent.toLowerCase();
+            if (browser_check.indexOf("msie 9") >= 0) {
+                $(".shape").css("top", "15%");
+                $(".shape").css("left", "55%");
+            }
+            
+            $(window).resize(function(){
+                winWidth = $(window).width();
+                location.reload();
+            })
+            
+            //모바일구분
+            if(winWidth < 800) {
+                isMobile = true;
+            }else {
+                isMobile = false;
+            }
+            
+            
+            setTimeout(function(){
+                $(".box_loader span").animate({"width":"100%"},2000, function(){
+                    $(".loading_wrap").fadeOut(800, function(){
+                        $("body").css("overflow-y","auto");
+                    });
+                });
+            },800)
+            
+            
+            var isChangeBg = false;
+            //스크롤이벤트
+            $(window).scroll(function () {
+            var scrollValue = $(window).scrollTop();
+            if (scrollValue > 450) {
+                console.log(scrollValue);
+                if (!isChangeBg) {
+                    $("body").stop().animate({backgroundColor: "#fff"}, 500);
+                    $("section h1.text_main").stop().animate({color: "#ff9800"}, 500);
+                    $('.btn_sideNav').css('background-image','url(Images/Common/btn_sideNav.png)');
+                    $("#section2").stop().animate({width: "100%"}, 500, function(){ 
+                        $(".text_profile").stop().animate({"opacity":"1"});
+                    });    
+                    
+                    $(".icon_scrollM").fadeOut();
+                    
+                    isChangeBg = true;
+                }
+                if (scrollValue > 1450) {
+                    $(".text_bg").each(function () {
+                        console.log("여기");
+                        $(this).stop().animate({ "bottom": "20px", "opacity": "1" }, 1000);
+                    })
+                } else {
+                    $(".text_bg").css("bottom",0);
+                    $(".text_bg").css("opacity",0);
+                }
+            } else {
+                if (isChangeBg) {
+                    $("body").stop().animate({backgroundColor: "#2A2A2A"}, 500);
+                    $("section h1.text_main").stop().animate({color: "#fff"}, 500);
+                    $('.btn_sideNav').css('background-image','url(Images/Common/btn_sideNav_w.png)');
+                    if(isMobile){
+                        $("#section2").stop().animate({width: "90%"}, 500, function(){ 
+                            $(".text_profile").stop().animate({"opacity":"0.5"});
+                        });    
+                    }else {
+                        $("#section2").stop().animate({width: "70%"}, 500, function(){ 
+                            $(".text_profile").stop().animate({"opacity":"0.5"},400);
+                        });    
+                    }
+                    
+                    
+                    $(".icon_scrollM").fadeIn();
+                    isChangeBg = false;
+                }
+            }
+            
+                
+            var size = $(".article").length;
+            var index = $(".article").index;
+            var offset = $('#bg1').offset();
+            $(".article").click(function(){
+                $('html, body').stop().animate({'scrollTop' : 0});
+                $(".btn_back").css("display","block");
+                $("#section1").css("display","none");
+                $("#section2").css("display","none");
+                $("#section4").css("display","none");
+                $(".btn_sideNav").css("display","none");
+                if(isMobile){
+                    for(var i =0 ; i<size ; i++){
+                        if($(this).index() == i){//내가 선택한 것이면
+                            $(this).find(".bg").stop().animate({"height":"100vh"},1000)
+                        }else {
+                            $(".article").css("width",0);
+                            $(".article").eq(i).css("display","none");
+                        } 
+                        $(this).css("width","100%");
+                    }
+                    $(".wrap_works").css("height","auto");    
+                }else {
+                    for(var i =0 ; i<size ; i++){
+                        if($(this).index() == i){
+                            $(this).stop().animate({"width":"100%"},2000);
+                        }else {
+                            $(".article").css("width",0);
+                            $(".article").eq(i).css("display","none");
+                        } 
+                        $(this).css("height","auto");
+                    }
+                    $(".wrap_works").css("height","auto");   
+                    $(".text_bg").css("opacity",1);
+                }
+                
+            }); 
+                
+                
+            
+            
+            
+        });
+
+        });
+        function subClose() {
+            $(".btn_back").css("display", "none");
+            $("#section1").css("display","block");
+            $("#section2").css("display","block");
+            $("#section4").css("display","block");
+            $(".btn_sideNav").css("display","block");
+            if(isMobile){
+                $(".bg").css("height","33vh");
+                $(".wrap_works").css("height","100vh");
+                $(".article").css("display","inline-block");
+                $(".article").css("width","100%");
+            }else {
+                $(".bg").css("height","100vh");
+                $(".wrap_works").css("height","100vh");
+                $(".article").css("display","inline-block");
+                $(".article").css("width","33.3%");
+                $(".article").css("height","100vh");
+            }
+        }
+        function navOpen() {
+            if (isOpen) {
+                setTimeout(function () {
+                    $("nav li").each(function () {
+                        $(this).removeClass("text_effect");
+                    });
+                }, 500)
+                $(".bg_nav").removeClass("open");
+                $('.btn_sideNav').css('background-image', 'url(Images/Common/btn_sideNav.png)');
+                isOpen = false;
+                setTimeout(function () {
+                    $("header").css("left", "100%");
+                },1000)
+            } else {
+                $(".bg_nav").addClass("open");
+                $("header").css("left",0);
+                $("nav li").each(function () {
+                    $(this).addClass("text_effect",time);
+                    time = time + 300
+                })
+                $('.btn_sideNav').css('background-image', 'url(Images/Common/btn_close.png)');
+                isOpen = true;
+                time = 500;
+                
+                $("nav li").click(function(){
+                    setTimeout(function () {
+                    $("nav li").each(function () {
+                        $(this).removeClass("text_effect");
+                    });
+                }, 500)
+                $(".bg_nav").removeClass("open");
+                $('.btn_sideNav').css('background-image', 'url(Images/Common/btn_sideNav.png)');
+                isOpen = false;
+                setTimeout(function () {
+                    $("header").css("left", "100%");
+                },1000)
+                })
+            }
+                
+        }
+        
+
+    </script>
+    <style>
+        body {overflow-x: hidden;overflow-y: hidden;width:100%;background-color:#22252B;}
+        .btn_sideNav {position: fixed;top: 10px;right: 10px;width: 30px;height: 30px;background: url(Images/Common/btn_sideNav_w.png) no-repeat center;background-size: cover;z-index:10;}
+        header {position:fixed;top:0;left:100%;right:0;bottom:0;z-index:5;}
+        header nav {position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);z-index: 6;}
+        header nav li {position: relative;top: 30px;color: #fff;text-align: center;font-size: 1.5em;line-height: 3;opacity: 0;}
+        header nav li.text_effect {opacity: 1;top:0;transition: all 2s;}
+        header nav li a {text-shadow: 0px 0px 5px #fff;}
+        .bg_nav {position: fixed;top: -40px;right: -40px;width: 150px;height: 150px;border-radius: 50%;background-color: #444;pointer-events: none;-webkit-transition: transform 1s cubic-bezier(0.39, 0.575, 0.565, 1);transition: transform 1s cubic-bezier(0.39, 0.575, 0.565, 1);-webkit-transform: scale(0);transform: scale(0);z-index: 5;}
+        .open {transform: scale(50);-ms-transform: scale(50);transition: all 2s;}
+        section {position: relative;width:100%;}
+        #section1 {height: 110vh;}
+        section h1.text_main {position: absolute;left:50%;bottom:32%;transform: translate(-50%, 0);color:#fff;font-size: 3.5em;font-weight: bold;line-height: 1;letter-spacing: 2px;text-align: center;}
+        .shape {position: absolute;top: 0;left: 0;fill: #3575E7;width:400px;height:400px;animation: move 10s infinite;}
+        .icon_scrollM {position: fixed;left: 50%;bottom: 0;margin-left: -20px;text-align: center;animation: scroll 0.5s ease-in infinite alternate;opacity: 0.9;z-index: 1;}
+        .text_scrollM {color: #333;font-size: 1em;}
+        .img_scrollM {width: 40px;}
+        #section2 {width:90%;padding: 20px 0; margin:0 auto;}
+        .wrap_profile {width:100%;padding:3em 0;margin:0 auto;background-color:#fff;text-align:center;}
+        .text_profile {position: relative;max-width: 90vw;margin: 3em auto;text-align:center;opacity: 0.5;}
+        .text_profile h2 {position: relative;margin-bottom: 0.8em;font-size: 3em;line-height: 1;color:#F8B167;animation: colorchange 5s ease-in infinite alternate;}
+        .text_profile ul li {margin-top: 10px;}
+        .text_profile ul li span {display: block;color:#808080;font-size: 0.9em;}
+        .text_profile dl dt {display: block;color:#808080;font-size: 0.9em;}
+        .wrap_works {width:100%;height:100vh;font-size: 0;}
+        .article {display: inline-block;overflow: hidden;width:100%;height:33%;font-size: 14px;vertical-align: top;background-color:#fff;}
+        .bg {position: relative;width: 100%;height: 33vh;filter: grayscale(0.5);}
+        .text_bg {position: absolute;left: 20px;bottom: -40px;color: #f9f2f2; font-size: 1.2rem;opacity: 0;}
+        .text_bg span:first-child {display: block;font-size: 2em;font-weight: bold;}
+        #bg1 {background:url("Images/Common/bg1.jpg") no-repeat left top;background-size: cover;}
+        #bg2 {background: url("Images/Common/bg2.jpg") no-repeat center top;background-size: cover;}
+        #bg3 {background: url("Images/Common/bg3.jpg") no-repeat left top;background-size: cover;}
+        .sub_logo{height:65px;margin-bottom: 2em;}
+        .wrap_sub > div {padding:10vw;text-align: center;}
+        .wrap_sub > div p {max-width: 500px;margin:0 auto;font-size: 1.1em;word-break: keep-all;}
+        .wrap_sub > div p span {display: block;margin-top: 1em;color: #808080;font-size: 0.9em;}
+        .wrap_sub > div a {display: inline-block;width:105px;padding: 8px 25px;margin-top: 20px;border: 1px solid #aaa;text-align: center;}
+        .wrap_sub > div:nth-child(2) {color:#fff;background-color:#2A2A2A;}
+        .wrap_sub > img {width:100%;}
+        .text_link {display: block;padding: 50px 0;text-align: center;font-size: 1.2rem;letter-spacing: 1.5px;background-color: #fff;color: #333;}
+        #section3 .btn_back {display: none;position: fixed;top: 10px;left: 10px;width: 50px;height: 50px;border: 1px solid #fff;border-radius: 50%;background: url(Images/Common/btn_arrowL_w.png) no-repeat center;background-size: cover;z-index: 3;}
+        a.btn_normal {display: inline-block;width:105px;padding: 8px 25px;margin-top: 4em;border: 1px solid #aaa;text-align: center;}
+        .text_sub li i {display: inline-block;width: 25px;height: 25px;background: url(Images/Common/icon_collection.png);background-position: -34px -60px;vertical-align: middle;}
+        .text_sub li i.icon_mail {background-position: -34px -2px;}
+        .text_sub li i.icon_tel {background-position: -4px -4px;}
+        .text_sub li:last-child {color: #aaa;font-size: 0.85em;}
+        .loading_wrap {display: block;overflow: hidden;position: fixed;top:0;left:0;right:0;bottom:0;background-color:#333;z-index: 10;}
+        .box_loader {position: absolute;top:50%;left:50%;transform: translate(-50%, -50%);width:150px;height:1px;background-color:#808080;}
+        .box_loader span {position: absolute;top:0;left:0;width:0;height:1px;background-color:#fff;}
+        @media (min-width: 1280px) {
+            .shape {width:750px;height:750px;}
+            .btn_sideNav {width:40px;height:40px;}
+            header nav li.text_effect {line-height: 4;font-size: 2em;}
+            section h1.text_main {left: 23%;bottom: 27%;font-size: 8em;text-align: left;line-height: 1.2;}
+            .text_scrollM {font-size:1.2em;}
+            #section2 {width:70%;}
+            .wrap_profile img {display:none;}
+            .text_profile {min-width:650px;}
+            .text_profile h2 {display: inline-block;width: 300px;font-size: 4.5em;text-align:left;}
+            .text_border:after {content: "";position: absolute;top: 14px;left: 195px;right: 31px;width: 16px;height: 6px;background-color: #f8b566;transform: rotate(-45deg);z-index: 8;}
+            .text_profile h2 + ul {display: inline-block;vertical-align: top;text-align: left;}
+            .text_profile > dl {max-width: 610px;margin: 15px auto;text-align: left;}
+            .text_profile > dl dt {display: inline-block;width:300px;vertical-align: top;}
+            .text_profile > dl dd {display: inline-block;}
+            .article {width:33.3%;height:100vh;}
+            .bg {width: 100%;height: 100vh;}
+            #section3 .wrap_sub {font-size: 0;background-color:#2a2a2a;}
+            #section3 .wrap_sub > div {display: inline-block;width:50%;padding:100px 0;font-size: 16px;vertical-align: middle;}
+            #section3 .wrap_sub > div:first-child {background-color:#fff;}
+            #section4 .text_profile {width: 100%;text-align: center;}
+            #section4 .text_profile h2 {text-align: center;}
+            #section4 .text_profile h2 + ul {display:block;text-align:center;}
+        }
+        @keyframes move {
+          0%   { transform: scale(1)   translate(10px, -15px); }
+          38%  { transform: scale(0.8, 1) translate(80vw, 15vh) rotate(160deg); }
+          40%  { transform: scale(0.8, 1) translate(80vw, 15vh) rotate(160deg); }
+          78%  { transform: scale(1.3) translate(0vw, 30vh) rotate(-20deg); }
+          80%  { transform: scale(1.3) translate(0vw, 30vh) rotate(-20deg); }
+          100% { transform: scale(1)   translate(10px, -15px); }
+        }
+        @keyframes colorchange {
+          0%   { color: #EDA015; }
+          50%   { color:#F2D26B; }
+          80%  { color: #f8ac66; }
+          100%  { color: #DC591E ; }
+        }
+        @-webkit-keyframes colorchange {
+          0%   { color: #EDA015; }
+          50%   { color:#F2D26B; }
+          80%  { color: #f8ac66; }
+          100%  { color: #DC591E ; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper" id="home">
+        <header>
+            <button type="button" class="btn_sideNav" onclick="navOpen()"></button>
+            <div class="bg_nav"></div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#section2">Profile</a></li>
+                    <li><a href="#section3">Work</a></li>
+                    <li><a href="#section4">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="contents">
+            <section id="section1">
+                <div class="shape">
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                         viewBox="0 0 68.4 78.8" style="enable-background:new 0 0 68.4 78.8;" xml:space="preserve">
+                        <style type="text/css">
+                            .st0 {fill: url(#shapeCircle);}
+                        </style>
+                        <linearGradient id="shapeCircle" gradientUnits="userSpaceOnUse" x1="0.669" y1="39.7635" x2="67.7338" y2="39.7635">
+                        <stop offset="0" style="stop-color:#F7ED6D" />
+                        <stop offset="1" style="stop-color:#F8AC66" />
+                    </linearGradient>
+                        <path id="XMLID_1_" class="st0" d="M67.7,34.4c0,17.7-19.2,43.4-36.7,43.4S9.1,52.8,2.4,36.4C-2.6,24.2,2.1-1.2,35,2
+        C52.5,3.7,67.7,16.7,67.7,34.4z" />
+                    </svg>
+                </div>
+                <h1 class="text_main">Suna's<br>Portfolio</h1>
+                <div class="icon_scrollM" style="display: block;">
+                    <div class="text_scrollM" style="color: rgb(255, 255, 255);">scroll</div>
+                    <img src="Images/Common/btn_arrow_w.png" class="img_scrollM" alt="아래로 향하는 화살표 이미지" title="아래로 향하는 화살표 이미지">
+                </div>
+            </section>
+            <section id="section2">
+                <div class="wrap_profile">
+                    <div class="text_profile">
+                        <h2 class="text_border">Profile</h2>
+                        <ul>
+                            <li>김선아</li>
+                            <li>&nbsp;</li>
+                            <li><span>2014.02 - 2014.05</span> 하이미디어컴퓨터학원 웹퍼블리셔프로페셔녈1,2</li>
+                            <li><span>2014.07 - 2018.02</span> (주)한국사회적성개발원 근무, 대리 / 3년 8개월</li>
+                            <li><span>2018.07 - 2018.12</span> 우파나 근무 / 프리랜서</li>
+                            <li><span>2019.12 - 2019.09</span> 프리랜서</li>
+                        </ul>
+                    </div>
+                    <img src="Images/Common/icon_waveLine.png" alt="물결 구분선 이미지" title="물결 구분선 이미지">
+                    <div class="text_profile">
+                        <dl>
+                            <dt>HTML / CSS</dt>
+                            <dd>웹표준 준수, HTML 5 시맨틱 태그 사용</dd>
+                        </dl>
+                        <dl>
+                            <dt>Javascript/jQuery</dt>
+                            <dd>js 조건문, 반복문, 함수 생성 및 응용<br>자주 사용되는 js 라이브러리를 활용</dd>
+                        </dl>
+                        <dl>
+                            <dt>크로스브라우징</dt>
+                            <dd>메이저 브라우저 호환성 대처</dd>
+                        </dl>
+                        <dl>
+                            <dt>웹접근성</dt>
+                            <dd>웹 콘텐츠 접근성 지침에 맞는 코딩 가능</dd>
+                        </dl>
+                        <dl>
+                            <dt>반응형 / 적응형 / 하이브리드</dt>
+                            <dd>뷰포트, 유동형 그리드, 미디어쿼리 이해</dd>
+                        </dl>
+                        <a class="btn_normal" href="career_file.html" target="_blank">경력기술서 보기</a>
+                    </div>
+                </div>
+
+            </section>
+            <section id="section3">
+                <a class="btn_back" onclick="subClose()" href="#section3"></a>
+                <div class="wrap_works">
+                    <div class="article">
+                        <div class="bg" id="bg1">
+                            <div class="text_bg">
+                                <span>01</span>
+                                <span>아트이음</span>
+                            </div>
+                        </div>
+                        <div class="wrap_sub">
+                            <div>
+                                <img src="Images/Common/logo_arteum.jpg" class="sub_logo" alt="아트이음 로고 이미지" title="아트이음 로고 이미지">
+                                <p>
+                                    <b>아트이음</b>이라는 미술작업플랫폼으로서, 개발자와 함께 신규 사이트를 제작 및 리뉴얼 하였습니다.
+                                    <span>자바스크립트로 fullPage Scroll 구현, newWaterfall 구현, 차트, video등</span>
+                                </p>
+                                <a href="https://www.arteum.co.kr" target="_blank">웹사이트 가기</a>
+                            </div>
+                            <div>
+                                <ul>
+                                    <li>적응형(하이브리드앱) / 신규 홈페이지 기획 및 제작</li>
+                                    <li>디자인 - 100%</li>
+                                    <li>코딩 - 100%</li>
+                                </ul>
+                            </div>
+                            <img src="Images/Common/bg_arteum.jpg" alt="아트이음 홈페이지 이미지" title="아트이음 홈페이지 이미지">
+                            <a href="https://www.arteum.co.kr" class="text_link"><img src="https://www.arteum.co.kr/Images/Common/icon_url.png" alt="URL 아이콘 이미지" title="URL 아이콘 이미지"> http:www.arteum.co.kr</a>
+                        </div>
+                    </div>
+                    <div class="article">
+                        <div class="bg" id="bg2">
+                            <div class="text_bg">
+                                <span>02</span>
+                                <span>미도록</span>
+                            </div>
+                        </div>
+                        <div class="wrap_sub">
+                            <div>
+                                <img src="Images/Common/logo_midorok.jpg" class="sub_logo" alt="미도록 로고 이미지" title="미도록 로고 이미지">
+                                <p>
+                                    <b>미도록</b>이라는 도록 제작사이트으로서, 개발자와 함께 신규 사이트를 제작 하였습니다.
+                                    <span>스크롤 값에 따른 fadeIn효과, 기기에 따른 디자인 변경(반응형), flipbook animation 제작, 아코디언 메뉴 등</span>
+                                </p>
+                                <a href="https://www.midorok.com" target="_blank">웹사이트 가기</a>
+                            </div>
+                            <div>
+                                <ul>
+                                    <li>반응형(미디어쿼리) / 신규 홈페이지 기획 및 제작</li>
+                                    <li>디자인 - 100%</li>
+                                    <li>코딩 - 100%</li>
+                                </ul>
+                            </div>
+                            <img src="Images/Common/bg_midorok.jpg" alt="미도록 홈페이지 이미지" title="미도록 홈페이지 이미지">
+                            <a href="http://www.midorok.com" class="text_link" target="_blank"><img src="https://www.arteum.co.kr/Images/Common/icon_url.png" alt="URL 아이콘 이미지" title="URL 아이콘 이미지"> http://www.midorok.com</a>
+                        </div>
+                    </div>
+                    <div class="article">
+                        <div class="bg" id="bg3">
+                            <div class="text_bg">
+                                <span>03</span>
+                                <span>현대인테리어</span>
+                            </div>
+                        </div>
+                        <div class="wrap_sub">
+                            <div>
+                                <img src="Images/Common/logo_interiorHD.jpg" class="sub_logo" alt="현대인테리어 로고 이미지" title="현대인테리어 로고 이미지">
+                                <p>
+                                    <b>현대인테리어</b>라는 회사의 신규 사이트를 제작하였습니다.
+                                    <span>parallax 효과, background-img zoom, Naver 지도 api를 이용한 지도맵 구현, bxSlider.js , rolling banner 제작 등</span>
+                                </p>
+                                <a href="http://www.kimsuna.kr/ex/interiorHD/index.html" target="_blank">웹사이트 가기</a>
+                            </div>
+                            <div>
+                                <ul>
+                                    <li>반응형 / 신규 홈페이지 기획 및 제작</li>
+                                    <li>디자인 - 100%</li>
+                                    <li>코딩 - 100%</li>
+                                </ul>
+                            </div>
+                            <img src="Images/Common/bg_interiorHD.jpg" alt="현대인테리어 홈페이지 이미지" title="현대인테리어 홈페이지 이미지">
+                            <a href="http://www.kimsuna.kr/ex/interiorHD/index.html" class="text_link" target="_blank"><img src="https://www.arteum.co.kr/Images/Common/icon_url.png" alt="URL 아이콘 이미지" title="URL 아이콘 이미지"> http:www.interiorHD.co.kr</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="section4">
+                <div class="text_profile" style="opacity: 1;">
+                    <h2>Contact</h2>
+                    <ul class="text_sub">
+                        <li><i class="icon_mail"></i>sun__ak@naver.com</li>
+                        <li><i class="icon_tel"></i>010-5054-8420</li>
+                        <li>© 2019. sunakim. ALL RIGHTS RESERVED.</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="loading_wrap">
+        <div class="box_loader">
+            <span></span>
+        </div>
+    </div>
+</body>
+</html>
